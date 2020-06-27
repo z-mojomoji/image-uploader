@@ -23,9 +23,10 @@ const FileUpload = (props: FileUploadProps) => {
     const onSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
         event.preventDefault()
         var formData = new FormData();
-        for (const key of Object.keys(newDocuments)) {
-            formData.append('album', props.selectedFolder)
-            formData.append('documents', newDocuments[parseInt(key)])
+        formData.append('album', props.selectedFolder.toLowerCase())
+
+        for (let i = 0; i < newDocuments.length; i++) {
+            formData.append('documents', newDocuments[i])
         }
         
         var requestOptions: RequestInit = {
