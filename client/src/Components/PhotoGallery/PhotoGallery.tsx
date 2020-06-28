@@ -14,7 +14,6 @@ export interface PhotoGalleryProps {
 // main class
 const PhotoGallery = (props: PhotoGalleryProps) => {
     
-    // Logic for displaying photos
     const indexOfLastPhotos = props.currentPage * props.photoPerPage;
     const indexOfFirstPhotos = indexOfLastPhotos - props.photoPerPage;
     const currentPhotos = props.photos.slice(indexOfFirstPhotos, indexOfLastPhotos);
@@ -40,7 +39,7 @@ const PhotoGallery = (props: PhotoGalleryProps) => {
     return (
         <div className="photoGallery">
             { props.photos ? currentPhotos.map((items, i) =>
-                <div className="photoGalleryItem">
+                <div className="photoGalleryItem" key={i}>
                     <Photo 
                         id={ items.id }
                         album={ items.album }
@@ -48,7 +47,11 @@ const PhotoGallery = (props: PhotoGalleryProps) => {
                         path={ items.path }
                         raw={ items.raw }
                      />
-                     <button className="photoGalleryButton" onClick={() => props.deletePhoto(items.id, items.album, items.name)}>Delete</button>
+                    <button className="photoGalleryButton" onClick={ () => { 
+                         if(window.confirm('Delete the photo?')) { props.deletePhoto(items.id, items.album, items.name) } 
+                    } }>
+                        Delete
+                    </button>
                 </div>
               ): null 
             }

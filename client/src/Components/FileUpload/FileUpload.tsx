@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import './FileUploadGallery.scss';
+import './FileUpload.scss';
 
 export interface FileUploadProps {
     selectedFolder: string;
@@ -14,9 +14,28 @@ export interface FileUploadState {
 // main class
 const FileUpload = (props: FileUploadProps) => {
     const [newDocuments, setNewDocuments] = React.useState('');
+    const [fileTypeError, setfileTypeError] = React.useState(false);
+    const [fileStatus, setFileStatus] = React.useState('');
+    const [fileStatusColor, setFileStatusColor] = React.useState('');
+
+    const validFileType = /(\.jpg|\.jpeg|\.svg|\.gif|\.png|\.tif)$/i;
 
     const onFileChange = React.useCallback(
-        (event) => setNewDocuments(event.target.files),
+        (event) => {
+            const fileList = event.target.files;
+            for(let file = 0; file < fileList.length; file++) {
+                if(!validFileType.exec(fileList[file].name)) {
+                    setfileTypeError(true)
+                    setFileStatus("Error, your file is not supported type")
+                    setFileStatusColor("error")
+                } else {
+                    setfileTypeError(false)
+                    setFileStatus('')
+                }
+            }
+
+            !fileTypeError ? setNewDocuments(fileList) : setNewDocuments('');
+        },
         []
     );
 
@@ -25,8 +44,19 @@ const FileUpload = (props: FileUploadProps) => {
         var formData = new FormData();
         formData.append('album', props.selectedFolder.toLowerCase())
 
-        for (let i = 0; i < newDocuments.length; i++) {
-            formData.append('documents', newDocuments[i])
+        for (let fileName of Object.values(newDocuments)) {
+            console.log(fileName[0]);
+          }
+          
+        if (newDocuments.length < 1) {
+            setFileStatus('Please upload something (or something else)')
+            setFileStatusColor('error')
+        } else {
+            for (let i = 0; i < newDocuments.length; i++) {
+                formData.append('documents', newDocuments[i])
+            }
+            setFileStatus('File has successfully uploaded')
+            setFileStatusColor('success')
         }
         
         var requestOptions: RequestInit = {
@@ -42,27 +72,31 @@ const FileUpload = (props: FileUploadProps) => {
     }
 
     return (
-        <div className="container">
-                <div className="row">
-                    <form onSubmit={onSubmit}>
-                        <div className="form-group">
-                            <input type="file" name="newDocuments" id="newDocument" onChange={onFileChange} accept="image/*" multiple />
-                        </div>
-                        <select value={props.selectedFolder} 
-                                onChange={props.onChangeSelect} 
-                            >
-                                <option value="Food">Food</option>
-                                <option value="Nature">Nature</option>
-                                <option value="Travel">Travel</option>
-                                <option value="Personal">Personal</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <p>{`You selected ` + props.selectedFolder}</p>
-                        <div className="form-group">
-                            <button className="btn btn-primary" type="submit">Upload</button>
-                        </div>
-                    </form>
-                </div>
+        <div className="fileUpload">
+            <form onSubmit={onSubmit}>
+                <input 
+                    className="fileUploadInput" 
+                    type="file" 
+                    name="newDocuments" 
+                    id="newDocument" 
+                    onChange={onFileChange} 
+                    accept="image/*" multiple 
+                />
+                {/* <label htmlFor="newDocument">Choose File to upload..</label> */}
+                <select value={props.selectedFolder} 
+                    onChange={props.onChangeSelect} 
+                    className="fileUploadSelect"
+                >
+                    <option value="Food">Food</option>
+                    <option value="Nature">Nature</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Other">Other</option>
+                </select>
+                <button className="fileUploadButton" type="submit">Upload</button>
+                <p className="fileUploadFolder">{`You have selected to upload to "` + props.selectedFolder + `" folder`}</p>
+                <p className={`fileUploadStatus `+ fileStatusColor}>{fileStatus}</p>
+            </form>
             </div>
     );
 }
