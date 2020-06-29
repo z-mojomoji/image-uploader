@@ -4,6 +4,7 @@ import PhotoGallery from './Components/PhotoGallery/PhotoGallery';
 import FileUpload from './Components/FileUpload/FileUpload';
 import logo from './logo.svg';
 import './App.css';
+import { connect } from 'http2';
 
 export interface AppProps {
 	albums?: AlbumProps[];
@@ -113,15 +114,15 @@ class App extends Component<AppProps, AppState> {
 	}
 
 	componentDidMount() {
-		var raw = {
-			"skip": 0,
-			"limit": 5
-		};
+		var raw = "{\n    \"skip\": 0,\n    \"limit\": 5\n}";
 
 		var requestOptions: RequestInit = {
 			method: 'POST',
-			body: JSON.stringify(raw),
-			redirect: 'follow'
+			body: raw,
+			redirect: 'follow',
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		};
 
 		fetch("http://localhost:8888/photos/list", requestOptions)
