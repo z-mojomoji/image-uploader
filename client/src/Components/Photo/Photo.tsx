@@ -9,7 +9,6 @@ export interface PhotoProps {
     raw: string;
 }
 
-// main class
 const Photo = (props: PhotoProps) => {
     return (
         <div className="photo">

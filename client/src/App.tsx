@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { MouseEvent } from 'react';
 import PhotoGallery from './Components/PhotoGallery/PhotoGallery';
 import FileUpload from './Components/FileUpload/FileUpload';
-import logo from './logo.svg';
 import './App.css';
 
 export interface AppProps {
@@ -84,7 +83,7 @@ class App extends Component<AppProps, AppState> {
 		return (
 			<div className="App">
 				<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
+					<h1>React Image Uploader</h1>
 					<FileUpload 
 						selectedFolder={selectedFolder} 
 						onChangeSelect={ this.handleSelectFolder } 

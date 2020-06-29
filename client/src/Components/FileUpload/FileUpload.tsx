@@ -11,7 +11,6 @@ export interface FileUploadState {
     selectedFolder: string;
 }
 
-// main class
 const FileUpload = (props: FileUploadProps) => {
     const [newDocuments, setNewDocuments] = React.useState('');
     const [fileTypeError, setfileTypeError] = React.useState(false);
@@ -43,12 +42,8 @@ const FileUpload = (props: FileUploadProps) => {
         event.preventDefault()
         var formData = new FormData();
         formData.append('album', props.selectedFolder.toLowerCase())
-
-        for (let fileName of Object.values(newDocuments)) {
-            console.log(fileName[0]);
-          }
           
-        if (newDocuments.length < 1) {
+        if (fileTypeError) {
             setFileStatus('Please upload something (or something else)')
             setFileStatusColor('error')
         } else {
@@ -82,7 +77,6 @@ const FileUpload = (props: FileUploadProps) => {
                     onChange={onFileChange} 
                     accept="image/*" multiple 
                 />
-                {/* <label htmlFor="newDocument">Choose File to upload..</label> */}
                 <select value={props.selectedFolder} 
                     onChange={props.onChangeSelect} 
                     className="fileUploadSelect"

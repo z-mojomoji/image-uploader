@@ -11,7 +11,6 @@ export interface PhotoGalleryProps {
     deletePhoto: (id: string, album: string, name: string) => void;
 }
 
-// main class
 const PhotoGallery = (props: PhotoGalleryProps) => {
     
     const indexOfLastPhotos = props.currentPage * props.photoPerPage;
