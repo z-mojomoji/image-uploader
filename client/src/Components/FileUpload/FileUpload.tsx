@@ -36,7 +36,7 @@ const FileUpload = (props: FileUploadProps) => {
 
             !fileTypeError ? setNewDocuments(fileList) : setNewDocuments('');
         },
-        []
+        [fileTypeError, validFileType]
     );
 
     const onSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
