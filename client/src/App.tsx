@@ -28,7 +28,15 @@ class App extends Component<AppProps, AppState> {
 		super(props);
 		this.onClickPagination = this.onClickPagination.bind(this);
 		this.state = {
-			documents: [],
+			documents: [
+				{
+					"id": "fef20926dc1b6ec6dd8f17acaa7a5ad9",
+					"album": "Nature",
+					"name": "road-1072823_1280.jpg",
+					"path": "/albums/Nature/road-1072823_1280.jpg",
+					"raw": "http://localhost:8888/photos/nature/road-1072823_1280.jpg"
+				},
+			],
 			currentPage: 1,
 			photoPerPage: 14,
 			selectedFolder: 'Food',
